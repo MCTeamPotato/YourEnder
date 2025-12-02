@@ -43,7 +43,7 @@ public final class YourEnder {
                 .put("EnderManPickable", Lists.newArrayList("create", "ae2", "mekanism", "mekanismgenerators", "mekanismadditions", "draconicevolution"))
                 .put("EnderManPickableSpecificBlocks", Lists.newArrayList("mekanismgenerators:fission_reactor_casing", "mekanismgenerators:fission_reactor_port"))
                 .put("DistanceForPicking", 6)
-                .put("EnderManDespawnWithOurPickableBlocks", true)
+                .put("EnderManDespawnWithOurPickableBlocks", false)
                 .initialize();
         PICKABLE = config.getSet("EnderManPickable", String.class);
         BLOCKS = config.getSet("EnderManPickableSpecificBlocks", String.class);
