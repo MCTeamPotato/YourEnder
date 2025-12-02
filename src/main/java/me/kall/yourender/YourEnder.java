@@ -2,9 +2,11 @@ package me.kall.yourender;
 
 import com.google.common.collect.Lists;
 import me.kall.duplicationless.config.JsonConfig;
+import me.kall.duplicationless.event.BlockChangeEvent;
 import me.kall.yourender.data.EndableBlocks;
 import me.kall.yourender.ext.Endable;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -47,6 +49,21 @@ public final class YourEnder {
             if (level instanceof ServerLevel) {
                 EndableBlocks.get((ServerLevel) level).rebuildChunk((ServerLevel) level, event.getChunk().getPos());
             }
+        }
+
+        @SubscribeEvent
+        public static void blockChange(BlockChangeEvent event) {
+            ServerLevel level = event.level();
+            long chunk = event.chunkPos();
+            long block = event.blockPos();
+
+            boolean was = ((Endable)event.oldState().getBlock()).yourEnder$get();
+            boolean is = ((Endable)event.newState().getBlock()).yourEnder$get();
+
+            MinecraftServer server = level.getServer();
+
+            if (was) server.execute(() -> EndableBlocks.get(level).remove(level, chunk, block));
+            if (is) server.execute(() -> EndableBlocks.get(level).add(level, chunk, block));
         }
     }
 
