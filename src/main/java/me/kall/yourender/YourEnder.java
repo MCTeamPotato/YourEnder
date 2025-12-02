@@ -39,7 +39,7 @@ public final class YourEnder {
     private static void loadConfig() {
         JsonConfig config = JsonConfig.create(MOD_ID, "1")
                 .put("EnderManPickable", Lists.newArrayList("create", "mekanism", "mekanismgenerators", "mekanismadditions", "draconicevolution"))
-                .put("EnderManPickableSpecificBlocks", Lists.newArrayList())
+                .put("EnderManPickableSpecificBlocks", Lists.newArrayList("mekanismgenerators:fission_reactor_casing", "mekanismgenerators:fission_reactor_port"))
                 .put("DistanceForPicking", 6)
                 .put("EnderManDespawnWithOurPickableBlocks", true)
                 .initialize();
