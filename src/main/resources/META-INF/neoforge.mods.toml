@@ -1,0 +1,24 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "yourender"
+version = "${version}"
+displayName = "YourEnder"
+authors = "Kall"
+description = '''
+A Minecraft mod
+'''
+#logoFile = ""
+
+[[dependencies.yourender]]
+modId="duplicationless"
+mandatory=true
+versionRange="[1.0.5,)"
+ordering="NONE"
+side="BOTH"
+
+[[mixins]]
+config = "yourender.mixins.json"
