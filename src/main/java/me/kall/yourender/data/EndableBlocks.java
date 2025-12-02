@@ -18,6 +18,10 @@ public class EndableBlocks extends ChunkData.BlockData {
     private final Object2ObjectMap<ResourceLocation, Long2ObjectMap<Set<Long>>> data = new Object2ObjectOpenHashMap<>();
     private static final String NAME = "YourEnderBlockStorage";
 
+    public EndableBlocks() {
+        super(NAME);
+    }
+
     @Override
     public @NotNull Object2ObjectMap<ResourceLocation, Long2ObjectMap<Set<Long>>> data() {
         return this.data;
