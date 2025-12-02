@@ -6,6 +6,7 @@ import me.kall.duplicationless.event.BlockChangeEvent;
 import me.kall.duplicationless.event.ReloadCommandEvent;
 import me.kall.yourender.data.EndableBlocks;
 import me.kall.yourender.ext.Endable;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -15,13 +16,12 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
-import net.minecraftforge.event.level.ChunkEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.event.entity.living.MobDespawnEvent;
+import net.neoforged.neoforge.event.level.ChunkEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -54,13 +54,13 @@ public final class YourEnder {
     }
 
     private static void setup() {
-        for (Map.Entry<ResourceKey<Block>, Block> entry : ForgeRegistries.BLOCKS.getEntries()) {
+        for (Map.Entry<ResourceKey<Block>, Block> entry : BuiltInRegistries.BLOCK.entrySet()) {
             ResourceLocation id = entry.getKey().location();
             ((Endable)entry.getValue()).yourEnder$set(PICKABLE.contains(id.getNamespace()) || BLOCKS.contains(id.toString()));
         }
     }
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = MOD_ID)
+    @EventBusSubscriber(modid = MOD_ID)
     public static final class ForgeEvents {
         @SubscribeEvent
         public static void chunkLoad(ChunkEvent.@NotNull Load event) {
@@ -86,13 +86,13 @@ public final class YourEnder {
         }
 
         @SubscribeEvent
-        public static void enderDespawn(MobSpawnEvent.AllowDespawn event) {
+        public static void enderDespawn(MobDespawnEvent event) {
             if (DESPAWN) {
                 Mob entity = event.getEntity();
                 if (entity instanceof EnderMan) {
                     BlockState blockState = ((EnderMan) entity).getCarriedBlock();
                     if (blockState == null) return;
-                    if (((Endable)blockState.getBlock()).yourEnder$get()) event.setResult(Event.Result.DENY);
+                    if (((Endable)blockState.getBlock()).yourEnder$get()) event.setResult(MobDespawnEvent.Result.DENY);
                 }
             }
         }
@@ -106,7 +106,7 @@ public final class YourEnder {
         }
     }
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = MOD_ID)
+    @EventBusSubscriber(modid = MOD_ID)
     public static final class ModEvents {
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent event) {
