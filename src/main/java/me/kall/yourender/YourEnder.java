@@ -90,7 +90,7 @@ public final class YourEnder {
 
         @SubscribeEvent
         public static void enderDespawn(LivingSpawnEvent.AllowDespawn event) {
-            if (DESPAWN) {
+            if (!DESPAWN) {
                 LivingEntity entity = event.getEntityLiving();
                 if (entity instanceof EnderMan) {
                     BlockState blockState = ((EnderMan) entity).getCarriedBlock();
