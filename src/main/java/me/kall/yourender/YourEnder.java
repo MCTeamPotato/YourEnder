@@ -35,10 +35,12 @@ public final class YourEnder {
     public static Set<String> BLOCKS;
     public static double DIST;
     public static boolean DESPAWN;
+    public static boolean EVERY;
 
     private static void loadConfig() {
         JsonConfig config = JsonConfig.create(MOD_ID, "1")
-                .put("EnderManPickable", Lists.newArrayList("create", "mekanism", "mekanismgenerators", "mekanismadditions", "draconicevolution"))
+                .put("EverythingIsPickableByEnderMan", false)
+                .put("EnderManPickable", Lists.newArrayList("create", "ae2", "mekanism", "mekanismgenerators", "mekanismadditions", "draconicevolution"))
                 .put("EnderManPickableSpecificBlocks", Lists.newArrayList("mekanismgenerators:fission_reactor_casing", "mekanismgenerators:fission_reactor_port"))
                 .put("DistanceForPicking", 6)
                 .put("EnderManDespawnWithOurPickableBlocks", true)
@@ -47,6 +49,7 @@ public final class YourEnder {
         BLOCKS = config.getSet("EnderManPickableSpecificBlocks", String.class);
         DIST = config.getDouble("DistanceForPicking")  * config.getDouble("DistanceForPicking");
         DESPAWN = config.getBoolean("EnderManDespawnWithOurPickableBlocks");
+        EVERY = config.getBoolean("EverythingIsPickableByEnderMan");
     }
 
     static {
@@ -56,7 +59,7 @@ public final class YourEnder {
     private static void setup() {
         for (Map.Entry<ResourceKey<Block>, Block> entry : ForgeRegistries.BLOCKS.getEntries()) {
             ResourceLocation id = entry.getKey().location();
-            ((Endable)entry.getValue()).yourEnder$set(PICKABLE.contains(id.getNamespace()) || BLOCKS.contains(id.toString()));
+            ((Endable)entry.getValue()).yourEnder$set(EVERY || PICKABLE.contains(id.getNamespace()) || BLOCKS.contains(id.toString()));
         }
     }
 
