@@ -29,7 +29,7 @@ public abstract class EndermanTakeBlockGoalMixin {
                 if (this.enderman.distanceToSqr(endable.getX(), endable.getY(), endable.getZ()) > YourEnder.DIST) return;
                 BlockState state = level.getBlockState(endable);
                 level.removeBlock(endable, false);
-                level.gameEvent(GameEvent.BLOCK_DESTROY, endable, GameEvent.Context.of(this.enderman, state));
+                level.gameEvent(this.enderman, GameEvent.BLOCK_DESTROY, endable);
                 this.enderman.setCarriedBlock(state.getBlock().defaultBlockState());
                 ci.cancel();
             }

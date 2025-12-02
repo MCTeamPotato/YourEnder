@@ -10,13 +10,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -64,7 +64,7 @@ public final class YourEnder {
     public static final class ForgeEvents {
         @SubscribeEvent
         public static void chunkLoad(ChunkEvent.@NotNull Load event) {
-            LevelAccessor level = event.getLevel();
+            LevelAccessor level = event.getWorld();
             if (level instanceof ServerLevel) {
                 EndableBlocks.get((ServerLevel) level).rebuildChunk((ServerLevel) level, event.getChunk().getPos());
             }
@@ -88,7 +88,7 @@ public final class YourEnder {
         @SubscribeEvent
         public static void enderDespawn(LivingSpawnEvent.AllowDespawn event) {
             if (DESPAWN) {
-                Mob entity = event.getEntity();
+                LivingEntity entity = event.getEntityLiving();
                 if (entity instanceof EnderMan) {
                     BlockState blockState = ((EnderMan) entity).getCarriedBlock();
                     if (blockState == null) return;
