@@ -22,7 +22,7 @@ public abstract class EndermanTakeBlockGoalMixin {
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void pick(CallbackInfo ci) {
-        if (this.enderman.level() instanceof ServerLevel level) {
+        if (this.enderman.level instanceof ServerLevel level) {
             Optional<Long> pos = EndableBlocks.get(level).pick(level, this.enderman.chunkPosition().toLong());
             if (pos.isPresent()) {
                 BlockPos endable = BlockPos.of(pos.get());

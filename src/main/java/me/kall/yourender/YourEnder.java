@@ -15,7 +15,7 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -86,7 +86,7 @@ public final class YourEnder {
         }
 
         @SubscribeEvent
-        public static void enderDespawn(MobSpawnEvent.AllowDespawn event) {
+        public static void enderDespawn(LivingSpawnEvent.AllowDespawn event) {
             if (DESPAWN) {
                 Mob entity = event.getEntity();
                 if (entity instanceof EnderMan) {
